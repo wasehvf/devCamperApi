@@ -11,7 +11,7 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
     "bootcamp"
   );
 
-  if (!course || course.bootcamp._id != req.params.id) {
+  if (!course || course.bootcamp._id.toString() !== req.params.id) {
     next(new Error());
   }
 

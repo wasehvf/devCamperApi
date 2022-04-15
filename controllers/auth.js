@@ -32,7 +32,7 @@ exports.changePassword = asyncHandler(async (req, res, next) => {
   let { currentPassword, newPassword } = req.body;
 
   const isMatch = await user.matchPassword(currentPassword);
-  console.log(isMatch);
+
   if (!isMatch) return res.status(401).send("Wrong Credentials");
 
   user.password = newPassword;
@@ -45,7 +45,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
 
   const user = await User.findOne({ email });
-  if (!user) return res.status(401).send("Unsuccesful");
+  if (!user) return next(new Error("Unauthorized"));
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
     expiresIn: "60m",
